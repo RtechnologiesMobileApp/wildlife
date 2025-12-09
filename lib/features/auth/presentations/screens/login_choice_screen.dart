@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wildlife/features/auth/presentations/screens/signup_screen.dart';
-import 'package:wildlife/features/auth/presentations/screens/wild_center_login_screen.dart';
 import 'package:wildlife/features/auth/presentations/screens/signin_screen.dart';
-import 'package:wildlife/features/home/presentations/screens/home_screen.dart';
+import 'package:wildlife/features/auth/presentations/screens/wild_center_login_screen.dart';
 import 'package:wildlife/features/onBoarding/presentations/widgets/rounded_button.dart';
 
 class LoginChoiceScreen extends StatefulWidget {
@@ -13,7 +11,8 @@ class LoginChoiceScreen extends StatefulWidget {
   State<LoginChoiceScreen> createState() => _LoginChoiceScreenState();
 }
 
-class _LoginChoiceScreenState extends State<LoginChoiceScreen> with SingleTickerProviderStateMixin {
+class _LoginChoiceScreenState extends State<LoginChoiceScreen>
+    with SingleTickerProviderStateMixin {
   bool _showUserOptions = false;
 
   void _toggleUserOptions() {
@@ -38,30 +37,32 @@ class _LoginChoiceScreenState extends State<LoginChoiceScreen> with SingleTicker
               // Original "I'm a User" button remains. Tapping it reveals Sign in / Create account.
               RoundedButton(
                 text: "I'm a User",
-                onPressed: _toggleUserOptions,
+                // onPressed: _toggleUserOptions,
+                onPressed: () => Get.to(const SigninScreen()),
               ),
 
-           _showUserOptions ?   const SizedBox(height: 12) : const SizedBox.shrink(),
+              _showUserOptions
+                  ? const SizedBox(height: 12)
+                  : const SizedBox.shrink(),
 
-              AnimatedCrossFade(
-                firstChild: const SizedBox.shrink(),
-                secondChild: Column(
-                  children: [
-                    RoundedButton(
-                      text: "Sign in",
-                      onPressed: () => Get.to(const SigninScreen()),
-                    ),
-                    const SizedBox(height: 10),
-                    RoundedButton(
-                      text: "Create account",
-                      onPressed: () => Get.to(SignupScreen()),
-                    ),
-                  ],
-                ),
-                crossFadeState: _showUserOptions ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                duration: const Duration(milliseconds: 250),
-              ),
-
+              // AnimatedCrossFade(
+              //   firstChild: const SizedBox.shrink(),
+              //   secondChild: Column(
+              //     children: [
+              //       RoundedButton(
+              //         text: "Sign in",
+              //         onPressed: () => Get.to(const SigninScreen()),
+              //       ),
+              //       const SizedBox(height: 10),
+              //       RoundedButton(
+              //         text: "Create account",
+              //         onPressed: () => Get.to(SignupScreen()),
+              //       ),
+              //     ],
+              //   ),
+              //   crossFadeState: _showUserOptions ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              //   duration: const Duration(milliseconds: 250),
+              // ),
               const SizedBox(height: 18),
 
               RoundedButton(
@@ -70,10 +71,10 @@ class _LoginChoiceScreenState extends State<LoginChoiceScreen> with SingleTicker
               ),
               const SizedBox(height: 12),
 
-              RoundedButton(
-                text: "I'm a Wildlife helpcenter",
-                onPressed: () => Get.to(HomeScreen()),
-              ),
+              // RoundedButton(
+              //   text: "I'm a Wildlife helpcenter",
+              //   onPressed: () => Get.to(HomeScreen()),
+              // ),
             ],
           ),
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wildlife/config/constants/colors.dart';
 import 'package:wildlife/features/injuredanimal/controller/injured_animals_controller.dart';
+import 'package:wildlife/features/injuredanimal/presentations/screens/sucessfully_submit_screen.dart';
 import 'package:wildlife/features/injuredanimal/presentations/widgets/custom_dropdown.dart';
 import 'package:wildlife/features/onBoarding/presentations/widgets/rounded_button.dart';
 
@@ -73,14 +73,18 @@ class InjuredAnimalReportScreen extends StatelessWidget {
               // Photo Upload
               Obx(
                 () => Row(
-                  
                   children: [
                     ElevatedButton.icon(
                       onPressed: controller.pickImage,
-                      icon: Icon(Icons.camera_alt,color: Colors.grey[600],),
-                      label: Text('Upload Photo', style: TextStyle(color: Colors.grey[800])),
+                      icon: Icon(Icons.camera_alt, color: Colors.grey[600]),
+                      label: Text(
+                        'Upload Photo',
+                        style: TextStyle(color: Colors.grey[800]),
+                      ),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color(0xFFF0F0F0)),
+                        backgroundColor: MaterialStateProperty.all(
+                          Color(0xFFF0F0F0),
+                        ),
                       ),
                     ),
                     SizedBox(width: 12),
@@ -112,7 +116,10 @@ class InjuredAnimalReportScreen extends StatelessWidget {
               RoundedButton(
                 text: "Submit Report",
 
-                onPressed: controller.submitReport,
+                onPressed: () {
+                  Get.to(ReportSuccessScreen());
+                },
+                // onPressed: controller.submitReport,
               ),
               // ElevatedButton(
               //   onPressed: controller.submitReport,

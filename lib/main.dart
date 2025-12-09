@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:wildlife/features/onBoarding/presentations/screens/on_boarding_screen.dart';
+import 'package:wildlife/features/onBoarding/presentations/screens/splash_screen.dart';
 
 void main() {
   runApp(WildHelpApp());
@@ -38,7 +38,7 @@ class WildHelpApp extends StatelessWidget {
       title: 'WildLife',
       debugShowCheckedModeBanner: false,
       theme: theme,
-      home: const OnboardingScreen(),
+      home: const SplashScreen(),
     );
   }
 }
