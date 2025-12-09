@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wildlife/config/constants/colors.dart';
 import 'package:wildlife/features/wildlifecenterdashboard/model/wild_life_report_model.dart';
 
 class ReportCard extends StatelessWidget {
@@ -12,7 +13,7 @@ class ReportCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.softgreen,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(

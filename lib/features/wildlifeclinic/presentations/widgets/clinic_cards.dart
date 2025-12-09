@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wildlife/config/constants/colors.dart';
 import 'package:wildlife/features/wildlifeclinic/model/clicnic_model.dart';
 
 class ClinicCard extends StatelessWidget {
@@ -19,6 +20,7 @@ class ClinicCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: AppColors.softgreen,
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 2,
@@ -62,10 +64,17 @@ class ClinicCard extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: openMaps,
-                icon: Icon(Icons.directions),
-                label: Text("Directions"),
+                icon: Icon(Icons.directions, color: Colors.white),
+                label: Text(
+                  "Directions",
+                  style: TextStyle(color: Colors.white),
+                ),
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary, // Soft green button
                   minimumSize: Size(double.infinity, 48),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
             ),
