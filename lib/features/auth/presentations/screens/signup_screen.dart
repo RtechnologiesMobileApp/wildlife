@@ -1,0 +1,142 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:wildlife/config/constants/colors.dart';
+
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameCtrl = TextEditingController();
+  final _emailCtrl = TextEditingController();
+  final _passwordCtrl = TextEditingController();
+  bool _agree = false;
+  bool _loading = false;
+
+  void _submit() async {
+    if (!_formKey.currentState!.validate()) return;
+    if (!_agree) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please accept the terms to continue')));
+      return;
+    }
+    setState(() => _loading = true);
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() => _loading = false);
+    // For prototype, navigate back or to onboarding/home
+    Get.back();
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Account created (prototype)')));
+  }
+
+  @override
+  void dispose() {
+    _nameCtrl.dispose();
+    _emailCtrl.dispose();
+    _passwordCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = Theme.of(context).primaryColor;
+    return Scaffold(
+      appBar: AppBar(title: const Text('Sign up')),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: SizedBox(
+                      width: constraints.maxWidth < 560 ? double.infinity : 560,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  width: 92,
+                                  height: 92,
+                                  decoration: BoxDecoration(
+                                    color: primary,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(Icons.person_add, size: 44, color: Colors.white),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              const Text('Create your account', textAlign: TextAlign.center, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                              const SizedBox(height: 16),
+
+                              TextFormField(
+                                controller: _nameCtrl,
+                                decoration: const InputDecoration(labelText: 'Full name'),
+                                validator: (v) => (v ?? '').trim().isEmpty ? 'Enter your name' : null,
+                              ),
+                              const SizedBox(height: 12),
+                              TextFormField(
+                                controller: _emailCtrl,
+                                decoration: const InputDecoration(labelText: 'Email'),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (v) => (v ?? '').contains('@') ? null : 'Enter a valid email',
+                              ),
+                              const SizedBox(height: 12),
+                              TextFormField(
+                                controller: _passwordCtrl,
+                                decoration: const InputDecoration(labelText: 'Password'),
+                                obscureText: true,
+                                validator: (v) => (v ?? '').length >= 6 ? null : 'Use at least 6 characters',
+                              ),
+
+                              const SizedBox(height: 12),
+                              Row(children: [
+                                Checkbox(value: _agree, onChanged: (v) => setState(() => _agree = v ?? false)),
+                                const Expanded(child: Text('I agree that my report and location may be shared with licensed rehab centers.')),
+                              ]),
+
+                              const SizedBox(height: 12),
+                              SizedBox(
+                                height: 48,
+                                child: ElevatedButton(
+                                  onPressed: _loading ? null : _submit,
+                                  child: _loading ? const CircularProgressIndicator(color: Colors.white) : const Text('Create account',style: TextStyle(color: Colors.white),),
+                                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+                                ),
+                              ),
+
+                              const SizedBox(height: 8),
+                              TextButton(
+                                onPressed: () => Get.back(),
+                                child: const Text('Already have an account? Sign in',style: TextStyle(color: AppColors.primary),),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
