@@ -4,6 +4,8 @@ import 'package:wildlife/features/firstAid/presentations/screens/first_aid_tips_
 import 'package:wildlife/features/home/presentations/widgets/home_card_widgets.dart';
 import 'package:wildlife/features/injuredanimal/presentations/screens/injuried_animal_report_screen.dart';
 import 'package:wildlife/features/wildlifeclinic/presentations/screens/wildlife_clinic_screen.dart';
+import 'package:wildlife/features/home/presentations/screens/user_profile_screen.dart';
+import 'package:wildlife/features/home/presentations/screens/user_settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,6 +14,22 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F6F2),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+            tooltip: 'Profile',
+            icon: const Icon(Icons.person_outline),
+            onPressed: () => Get.to(() => const UserProfileScreen()),
+          ),
+          IconButton(
+            tooltip: 'Settings',
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => Get.to(() => const UserSettingsScreen()),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),

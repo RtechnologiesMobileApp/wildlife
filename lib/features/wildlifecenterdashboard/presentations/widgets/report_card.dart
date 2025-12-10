@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:wildlife/config/constants/colors.dart';
+import 'package:wildlife/features/wildlifecenterdashboard/presentations/screens/report_details_screen.dart';
 import 'package:wildlife/features/wildlifecenterdashboard/model/wild_life_report_model.dart';
 
 class ReportCard extends StatelessWidget {
@@ -9,7 +11,9 @@ class ReportCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () => Get.to(() => ReportDetailsScreen(report: report)),
+      child: Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -17,7 +21,7 @@ class ReportCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -91,6 +95,7 @@ class ReportCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }
