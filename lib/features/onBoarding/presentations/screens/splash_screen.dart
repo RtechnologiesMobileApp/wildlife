@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:wildlife/config/constants/colors.dart';
 import 'package:wildlife/config/constants/images.dart';
 import 'package:wildlife/features/onBoarding/presentations/screens/on_boarding_screen.dart';
 
@@ -11,10 +12,21 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+    );
+    _controller.forward();
     // Navigate to next screen after 3 seconds
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
@@ -25,23 +37,30 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Change to your brand color
+      backgroundColor: Colors.white,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              AppImages.logo, // Add your app logo in assets
-              width: 250,
-              height: 250,
-            ),
-            const SizedBox(height: 20),
-            // const CircularProgressIndicator(
-            //   color: Colors.green, // Match your theme
-            // ),
-          ],
+        child: FadeTransition(
+          opacity: _animation,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                AppImages.logo,
+                width: 250,
+                height: 250,
+              ),
+              const SizedBox(height: 20),
+             
+            ],
+          ),
         ),
       ),
     );

@@ -118,7 +118,7 @@ class _CenterOtpScreenState extends State<CenterOtpScreen> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Enter the 4-digit code sent to ${widget.email}',
+                              'Enter the 4-digit code sent to your email',
                               textAlign: TextAlign.center,
                               style: const TextStyle(fontSize: 13, color: Colors.grey),
                             ),
@@ -167,9 +167,18 @@ class _CenterOtpScreenState extends State<CenterOtpScreen> {
                               child: ElevatedButton(
                                 onPressed: _loading ? null : _verifyOtp,
                                 child: _loading
-                                    ? const CircularProgressIndicator(color: Colors.white)
+                                    ? const Center(
+                                        child: SizedBox(
+                                          height: 24,
+                                          width: 24,
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 2,
+                                          ),
+                                        ),
+                                      )
                                     : const Text('Verify OTP', style: TextStyle(color: Colors.white)),
-                                    style: ElevatedButton.styleFrom(backgroundColor: primary),
+                                  style: ElevatedButton.styleFrom(backgroundColor: primary),
                               ),
                             ),
                             const SizedBox(height: 16),

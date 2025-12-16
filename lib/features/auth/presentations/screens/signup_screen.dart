@@ -85,23 +85,53 @@ class _SignupScreenState extends State<SignupScreen> {
                               const SizedBox(height: 16),
 
                               TextFormField(
+                                
                                 controller: _nameCtrl,
-                                decoration: const InputDecoration(labelText: 'Full name'),
+                                decoration:  InputDecoration(
+                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                                  focusColor: primary,
+                                  labelText: 'Full name',border: OutlineInputBorder(borderRadius: BorderRadius.circular(14))),
+                                
+                                onChanged: (v) {
+                                  _formKey.currentState?.validate();
+                                  setState(() {});
+                                },
                                 validator: (v) => (v ?? '').trim().isEmpty ? 'Enter your name' : null,
                               ),
                               const SizedBox(height: 12),
                               TextFormField(
                                 controller: _emailCtrl,
-                                decoration: const InputDecoration(labelText: 'Email'),
+                                
+                                decoration:  InputDecoration(
+                                   focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                                  labelText: 'Email',border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),),
                                 keyboardType: TextInputType.emailAddress,
-                                validator: (v) => (v ?? '').contains('@') ? null : 'Enter a valid email',
+                                onChanged: (v) {
+                                  _formKey.currentState?.validate();
+                                  setState(() {});
+                                },
+                                validator: (v) {
+                                  final email = v ?? '';
+                                  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                                  return emailRegex.hasMatch(email) ? null : 'Enter a valid email (e.g., user@domain.com)';
+                                },
                               ),
                               const SizedBox(height: 12),
                               TextFormField(
                                 controller: _passwordCtrl,
-                                decoration: const InputDecoration(labelText: 'Password'),
+                                decoration:  InputDecoration(
+                                   focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                                  labelText: 'Password',border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),),
                                 obscureText: true,
-                                validator: (v) => (v ?? '').length >= 6 ? null : 'Use at least 6 characters',
+                                onChanged: (v) {
+                                  _formKey.currentState?.validate();
+                                  setState(() {});
+                                },
+                                validator: (v) {
+                                  if ((v ?? '').isEmpty) return 'Enter a password';
+                                  if (v!.length < 6) return 'Password must be at least 6 characters';
+                                  return null;
+                                },
                               ),
 
                               const SizedBox(height: 12),
@@ -115,7 +145,18 @@ class _SignupScreenState extends State<SignupScreen> {
                                 height: 48,
                                 child: ElevatedButton(
                                   onPressed: _loading ? null : _submit,
-                                  child: _loading ? const CircularProgressIndicator(color: Colors.white) : const Text('Create account',style: TextStyle(color: Colors.white),),
+                                  child: _loading
+                                      ? const Center(
+                                          child: SizedBox(
+                                            height: 24,
+                                            width: 24,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.white,
+                                              strokeWidth: 2,
+                                            ),
+                                          ),
+                                        )
+                                      : const Text('Create account', style: TextStyle(color: Colors.white),),
                                   style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
                                 ),
                               ),

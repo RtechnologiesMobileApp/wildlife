@@ -94,38 +94,82 @@ class _CenterSignupScreenState extends State<CenterSignupScreen> {
                               // Center Name
                               TextFormField(
                                 controller: _centerNameCtrl,
-                                decoration: const InputDecoration(labelText: 'Center Name'),
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                                  labelText: 'Center Name',
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                                ),
+                                onChanged: (v) {
+                                  _formKey.currentState?.validate();
+                                  setState(() {});
+                                },
                                 validator: (v) => (v ?? '').trim().isEmpty ? 'Enter center name' : null,
                               ),
                               const SizedBox(height: 12),
                               // Email
                               TextFormField(
                                 controller: _emailCtrl,
-                                decoration: const InputDecoration(labelText: 'Email'),
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                                  labelText: 'Email',
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                                ),
                                 keyboardType: TextInputType.emailAddress,
-                                validator: (v) => (v ?? '').contains('@') ? null : 'Enter a valid email',
+                                onChanged: (v) {
+                                  _formKey.currentState?.validate();
+                                  setState(() {});
+                                },
+                                validator: (v) {
+                                  final email = v ?? '';
+                                  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                                  return emailRegex.hasMatch(email) ? null : 'Enter a valid email (e.g., user@domain.com)';
+                                },
                               ),
                               const SizedBox(height: 12),
                               // Phone
                               TextFormField(
                                 controller: _phoneCtrl,
-                                decoration: const InputDecoration(labelText: 'Phone Number'),
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                                  labelText: 'Phone Number',
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                                ),
                                 keyboardType: TextInputType.phone,
+                                onChanged: (v) {
+                                  _formKey.currentState?.validate();
+                                  setState(() {});
+                                },
                                 validator: (v) => (v ?? '').length >= 10 ? null : 'Enter a valid phone number',
                               ),
                               const SizedBox(height: 12),
                               // Address
                               TextFormField(
                                 controller: _addressCtrl,
-                                decoration: const InputDecoration(labelText: 'Center Address'),
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                                  labelText: 'Center Address',
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                                ),
                                 maxLines: 2,
+                                onChanged: (v) {
+                                  _formKey.currentState?.validate();
+                                  setState(() {});
+                                },
                                 validator: (v) => (v ?? '').trim().isEmpty ? 'Enter address' : null,
                               ),
                               const SizedBox(height: 12),
                               // License Number
                               TextFormField(
                                 controller: _licenseCtrl,
-                                decoration: const InputDecoration(labelText: 'License Number'),
+                                decoration: InputDecoration(
+                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                                  labelText: 'License Number',
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                                ),
+                                onChanged: (v) {
+                                  _formKey.currentState?.validate();
+                                  setState(() {});
+                                },
                                 validator: (v) => (v ?? '').trim().isEmpty ? 'Enter license number' : null,
                               ),
                               const SizedBox(height: 18),
@@ -133,9 +177,18 @@ class _CenterSignupScreenState extends State<CenterSignupScreen> {
                                 height: 48,
                                 child: ElevatedButton(
                                   onPressed: _loading ? null : _submit,
-                                  child: _loading
-                                      ? const CircularProgressIndicator(color: Colors.white)
-                                      : const Text('Verify & Continue',style: TextStyle(color: Colors.white),),
+                                    child: _loading
+                                        ? const Center(
+                                            child: SizedBox(
+                                              height: 24,
+                                              width: 24,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 2,
+                                              ),
+                                            ),
+                                          )
+                                        : const Text('Verify & Continue', style: TextStyle(color: Colors.white),),
                                   style: ElevatedButton.styleFrom(backgroundColor: primary),
                                 ),
                               ),

@@ -10,13 +10,14 @@ class CenterProfileScreen extends StatefulWidget {
 }
 
 class _CenterProfileScreenState extends State<CenterProfileScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameCtrl = TextEditingController(text: 'Green Valley Wildlife Center');
-  final _emailCtrl = TextEditingController(text: 'center@example.org');
-  final _phoneCtrl = TextEditingController(text: '+1 555 123 456');
-  final _addressCtrl = TextEditingController(text: '1234 Forest Lane, Greenville');
-  final _licenseCtrl = TextEditingController(text: 'LIC-000123');
-  bool _loading = false;
+   final _formKey = GlobalKey<FormState>();
+   final _nameCtrl = TextEditingController(text: 'Green Valley Wildlife Center');
+   final _emailCtrl = TextEditingController(text: 'center@example.org');
+   final _phoneCtrl = TextEditingController(text: '+1 555 123 456');
+   final _addressCtrl = TextEditingController(text: '1234 Forest Lane, Greenville');
+   final _licenseCtrl = TextEditingController(text: 'LIC-000123');
+   bool _loading = false;
+   String? _profileImage;
 
   void _save() async {
     if (!_formKey.currentState!.validate()) return;
@@ -24,6 +25,12 @@ class _CenterProfileScreenState extends State<CenterProfileScreen> {
     await Future.delayed(const Duration(seconds: 1));
     setState(() => _loading = false);
     Get.snackbar('Saved', 'Center information updated');
+  }
+
+  void _pickImage() {
+    // Simulate picking image
+    setState(() => _profileImage = 'https://via.placeholder.com/150');
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile picture updated')));
   }
 
   @override
@@ -57,44 +64,100 @@ class _CenterProfileScreenState extends State<CenterProfileScreen> {
                       children: [
                         Align(
                           alignment: Alignment.center,
-                          child: Container(
-                            width: 92,
-                            height: 92,
-                            decoration: BoxDecoration(color: primary, shape: BoxShape.circle),
-                            child: const Icon(Icons.business, size: 44, color: Colors.white),
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: 92,
+                                height: 92,
+                                decoration: BoxDecoration(
+                                  color: primary,
+                                  shape: BoxShape.circle,
+                                  image: _profileImage != null
+                                      ? DecorationImage(
+                                          image: NetworkImage(_profileImage!),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : null,
+                                ),
+                                child: _profileImage == null
+                                    ? const Icon(Icons.business, size: 44, color: Colors.white)
+                                    : null,
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: IconButton(
+                                  onPressed: _pickImage,
+                                  icon: const Icon(Icons.camera_alt, size: 20, color: Colors.white),
+                                  style: IconButton.styleFrom(
+                                    backgroundColor: primary,
+                                    padding: const EdgeInsets.all(6),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
                           controller: _nameCtrl,
-                          decoration: const InputDecoration(labelText: 'Center Name'),
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                            labelText: 'Center Name',
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                            prefixIcon: const Icon(Icons.business),
+                          ),
                           validator: (v) => (v ?? '').trim().isEmpty ? 'Enter center name' : null,
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
                           controller: _emailCtrl,
-                          decoration: const InputDecoration(labelText: 'Email'),
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                            labelText: 'Email',
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                            prefixIcon: const Icon(Icons.email),
+                          ),
                           keyboardType: TextInputType.emailAddress,
-                          validator: (v) => (v ?? '').contains('@') ? null : 'Enter a valid email',
+                          validator: (v) {
+                            final email = v ?? '';
+                            final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                            return emailRegex.hasMatch(email) ? null : 'Enter a valid email (e.g., user@domain.com)';
+                          },
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
                           controller: _phoneCtrl,
-                          decoration: const InputDecoration(labelText: 'Phone'),
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                            labelText: 'Phone',
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                            prefixIcon: const Icon(Icons.phone),
+                          ),
                           keyboardType: TextInputType.phone,
                           validator: (v) => (v ?? '').length >= 8 ? null : 'Enter a valid phone',
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
                           controller: _addressCtrl,
-                          decoration: const InputDecoration(labelText: 'Address'),
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                            labelText: 'Address',
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                            prefixIcon: const Icon(Icons.location_on),
+                          ),
                           maxLines: 2,
                           validator: (v) => (v ?? '').trim().isEmpty ? 'Enter address' : null,
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
                           controller: _licenseCtrl,
-                          decoration: const InputDecoration(labelText: 'License Number'),
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
+                            labelText: 'License Number',
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
+                            prefixIcon: const Icon(Icons.verified),
+                          ),
                           validator: (v) => (v ?? '').trim().isEmpty ? 'Enter license number' : null,
                         ),
                         const SizedBox(height: 18),
@@ -102,7 +165,18 @@ class _CenterProfileScreenState extends State<CenterProfileScreen> {
                           height: 48,
                           child: ElevatedButton(
                             onPressed: _loading ? null : _save,
-                            child: _loading ? const CircularProgressIndicator(color: Colors.white) : const Text('Save Changes', style: TextStyle(color: Colors.white)),
+                            child: _loading
+                                ? const Center(
+                                    child: SizedBox(
+                                      height: 24,
+                                      width: 24,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 2,
+                                      ),
+                                    ),
+                                  )
+                                : const Text('Save Changes', style: TextStyle(color: Colors.white)),
                             style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
                           ),
                         ),
