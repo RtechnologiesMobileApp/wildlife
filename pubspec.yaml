@@ -38,6 +38,8 @@ dependencies:
   image_picker: ^1.2.1
   get: ^4.7.3
   url_launcher: ^6.3.2
+  google_fonts: ^6.3.3
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:

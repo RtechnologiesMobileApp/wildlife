@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wildlife/config/constants/colors.dart';
+import 'package:wildlife/config/constants/images.dart';
 import 'package:wildlife/features/auth/presentations/screens/signup_screen.dart';
 import 'package:wildlife/features/home/presentations/screens/home_screen.dart';
 
@@ -22,7 +23,6 @@ class _SigninScreenState extends State<SigninScreen> {
     setState(() => _loading = true);
     await Future.delayed(const Duration(seconds: 1));
     setState(() => _loading = false);
-    // Prototype: navigate to home
     Get.offAll(HomeScreen());
   }
 
@@ -35,126 +35,142 @@ class _SigninScreenState extends State<SigninScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final primary = Theme.of(context).primaryColor;
+    final primary = AppColors.primary;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign in')),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: SizedBox(
-                      width: constraints.maxWidth < 560 ? double.infinity : 560,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 18),
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(12),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Logo & Welcome
+              Image.asset(AppImages.logo, width: screenWidth * 0.3),
+              const SizedBox(height: 20),
+              const Text(
+                'Welcome Back',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Sign in to continue helping wildlife',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+              const SizedBox(height: 40),
+
+              // Form Fields
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextFormField(
+                      controller: _emailCtrl,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        prefixIcon: const Icon(Icons.email_outlined),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
                         ),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              // Colored circular header instead of raised card
-                              Align(
-                                alignment: Alignment.center,
-                                child: Container(
-                                  width: 92,
-                                  height: 92,
-                                  decoration: BoxDecoration(
-                                    color: primary,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(Icons.login, size: 44, color: Colors.white),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              const Text('Welcome back', textAlign: TextAlign.center, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-                              const SizedBox(height: 18),
-
-                              TextFormField(
-                                controller: _emailCtrl,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
-                                  labelText: 'Email',
-                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
-                                ),
-                                keyboardType: TextInputType.emailAddress,
-                                onChanged: (v) {
-                                  _formKey.currentState?.validate();
-                                  setState(() {});
-                                },
-                                validator: (v) {
-                                  final email = v ?? '';
-                                  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-                                  return emailRegex.hasMatch(email) ? null : 'Enter a valid email (e.g., user@domain.com)';
-                                },
-                              ),
-                              const SizedBox(height: 12),
-                              TextFormField(
-                                controller: _passwordCtrl,
-                                decoration: InputDecoration(
-                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: primary)),
-                                  labelText: 'Password',
-                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(14)),
-                                ),
-                                obscureText: true,
-                                onChanged: (v) {
-                                  _formKey.currentState?.validate();
-                                  setState(() {});
-                                },
-                                validator: (v) {
-                                  if ((v ?? '').isEmpty) return 'Enter your password';
-                                  if (v!.length < 6) return 'Password must be at least 6 characters';
-                                  return null;
-                                },
-                              ),
-
-                              const SizedBox(height: 18),
-                              SizedBox(
-                                height: 48,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
-                                  onPressed: _loading ? null : _submit,
-                                  child: _loading
-                                      ? const Center(
-                                          child: SizedBox(
-                                            height: 24,
-                                            width: 24,
-                                            child: CircularProgressIndicator(
-                                              color: AppColors.primary,
-                                              strokeWidth: 2,
-                                            ),
-                                          ),
-                                        )
-                                      : const Text('Sign in', style: TextStyle(color: Colors.white),),
-                                ),
-                              ),
-
-                              const SizedBox(height: 12),
-                              TextButton(
-                                onPressed: () => Get.to(SignupScreen()),
-                                child: const Text('Don\'t have an account? Create one',style: TextStyle(color: AppColors.primary),),
-                              )
-                            ],
-                          ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide(color: primary),
                         ),
                       ),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (v) {
+                        final email = v ?? '';
+                        final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                        return emailRegex.hasMatch(email)
+                            ? null
+                            : 'Enter a valid email';
+                      },
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _passwordCtrl,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        prefixIcon: const Icon(Icons.lock_outline),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide(color: primary),
+                        ),
+                      ),
+                      obscureText: true,
+                      validator: (v) {
+                        if ((v ?? '').isEmpty) return 'Enter your password';
+                        if (v!.length < 6)
+                          return 'Password must be at least 6 characters';
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Sign In Button
+                    SizedBox(
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                        onPressed: _loading ? null : _submit,
+                        child: _loading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                'Sign In',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Sign Up link
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Don\'t have an account? ',
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                        GestureDetector(
+                          onTap: () => Get.to(const SignupScreen()),
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            ],
+          ),
+        ),
       ),
     );
   }

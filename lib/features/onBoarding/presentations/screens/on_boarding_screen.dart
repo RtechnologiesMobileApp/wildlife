@@ -4,14 +4,14 @@ import 'package:wildlife/features/auth/presentations/screens/login_choice_screen
 import 'package:wildlife/features/onBoarding/presentations/widgets/check_box.dart';
 import 'package:wildlife/features/onBoarding/presentations/widgets/rounded_button.dart';
 
-class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+class GetStartedScreen extends StatefulWidget {
+  const GetStartedScreen({super.key});
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingConsentScreenState();
+  State<GetStartedScreen> createState() => _GetStartedScreenState();
 }
 
-class _OnboardingConsentScreenState extends State<OnboardingScreen> {
+class _GetStartedScreenState extends State<GetStartedScreen> {
   bool agreed = false;
 
   @override

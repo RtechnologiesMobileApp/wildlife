@@ -34,7 +34,7 @@ class _CenterSettingsScreenState extends State<CenterSettingsScreen> {
               value: _notifications,
               onChanged: (v) => setState(() => _notifications = v),
               thumbColor: MaterialStateProperty.all(Colors.white),
-             
+
               activeTrackColor: AppColors.primary,
             ),
             SwitchListTile(
@@ -48,11 +48,38 @@ class _CenterSettingsScreenState extends State<CenterSettingsScreen> {
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: _logout,
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: const Text('Logout', style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+              ),
+              child: const Text(
+                'Logout',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             const SizedBox(height: 8),
-            TextButton(onPressed: () => Get.back(), child: const Text('Close', style: TextStyle(color: AppColors.primary))),
+
+            // TextButton(onPressed: () => Get.back(), child: const Text('Close', style: TextStyle(color: AppColors.primary))),
+            OutlinedButton(
+              onPressed: () => Get.back(),
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(
+                  color: AppColors.primary,
+                ), // border color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    12,
+                  ), // optional: rounded corners
+                ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 24,
+                ),
+              ),
+              child: const Text(
+                'Close',
+                style: TextStyle(color: AppColors.primary),
+              ),
+            ),
           ],
         ),
       ),

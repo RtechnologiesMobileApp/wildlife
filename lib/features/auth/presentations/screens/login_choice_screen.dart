@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wildlife/config/constants/colors.dart';
+import 'package:wildlife/config/constants/images.dart';
 import 'package:wildlife/features/auth/presentations/screens/signin_screen.dart';
 import 'package:wildlife/features/auth/presentations/screens/wild_center_login_screen.dart';
 import 'package:wildlife/features/onBoarding/presentations/widgets/rounded_button.dart';
@@ -21,62 +23,93 @@ class _LoginChoiceScreenState extends State<LoginChoiceScreen>
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Who are you?',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      backgroundColor: Colors.white, // White background
+      body: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 40),
+
+            // Logo & App Name
+            Expanded(
+              flex: 2,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(AppImages.logo, width: screenWidth * 0.4),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Welcome to WildLife',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40.0),
+                    child: Text(
+                      'Connect with wildlife centers and help animals in need safely and quickly.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16, color: Colors.black54),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 32),
+            ),
 
-              // Original "I'm a User" button remains. Tapping it reveals Sign in / Create account.
-              RoundedButton(
-                text: "I'm a User",
-                // onPressed: _toggleUserOptions,
-                onPressed: () => Get.to(const SigninScreen()),
+            // Buttons Section
+            Expanded(
+              flex: 3,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 32,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(32),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 15,
+                      offset: Offset(0, -5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RoundedButton(
+                      text: "I'm a User",
+                      // backgroundColor: AppColors.primaryGreen,
+                      // textColor: Colors.white,
+                      onPressed: () => Get.to(const SigninScreen()),
+                    ),
+                    const SizedBox(height: 16),
+                    RoundedButton(
+                      text: "I'm a Wildlife Center",
+                      // backgroundColor: AppColors.secondaryGreen,
+                      // textColor: Colors.white,
+                      onPressed: () => Get.to(const CenterLoginScreen()),
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      'Select your role to continue',
+                      style: TextStyle(fontSize: 14, color: Colors.black54),
+                    ),
+                  ],
+                ),
               ),
-
-              _showUserOptions
-                  ? const SizedBox(height: 12)
-                  : const SizedBox.shrink(),
-
-              // AnimatedCrossFade(
-              //   firstChild: const SizedBox.shrink(),
-              //   secondChild: Column(
-              //     children: [
-              //       RoundedButton(
-              //         text: "Sign in",
-              //         onPressed: () => Get.to(const SigninScreen()),
-              //       ),
-              //       const SizedBox(height: 10),
-              //       RoundedButton(
-              //         text: "Create account",
-              //         onPressed: () => Get.to(SignupScreen()),
-              //       ),
-              //     ],
-              //   ),
-              //   crossFadeState: _showUserOptions ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-              //   duration: const Duration(milliseconds: 250),
-              // ),
-              const SizedBox(height: 18),
-
-              RoundedButton(
-                text: "I'm a Wildlife Center",
-                onPressed: () => Get.to(CenterLoginScreen()),
-              ),
-              const SizedBox(height: 12),
-
-              // RoundedButton(
-              //   text: "I'm a Wildlife helpcenter",
-              //   onPressed: () => Get.to(HomeScreen()),
-              // ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
