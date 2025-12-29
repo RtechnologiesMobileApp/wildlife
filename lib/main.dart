@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:wildlife/features/onBoarding/presentations/screens/splash_screen.dart';
 
@@ -7,6 +8,8 @@ void main() {
 }
 
 class WildHelpApp extends StatelessWidget {
+  const WildHelpApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     final theme = ThemeData(
@@ -34,11 +37,19 @@ class WildHelpApp extends StatelessWidget {
       ),
     );
 
-    return GetMaterialApp(
-      title: 'WildLife',
-      debugShowCheckedModeBanner: false,
-      theme: theme,
-      home: const SplashScreen(),
+    // ✅ Wrap GetMaterialApp with ScreenUtilInit
+    return ScreenUtilInit(
+      designSize: const Size(375, 812), // your Figma design size
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return GetMaterialApp(
+          title: 'WildLife',
+          debugShowCheckedModeBanner: false,
+          theme: theme,
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 }

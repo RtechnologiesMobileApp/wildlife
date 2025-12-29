@@ -3,6 +3,7 @@ import 'package:wildlife/features/wildlifecenterdashboard/model/wild_life_report
 import 'package:wildlife/features/wildlifecenterdashboard/services/report_services.dart';
 
 class ReportsController extends GetxController {
+  var isLoading = false.obs;
   final service = MockReportsService();
   var reports = <WildlifeReportModel>[].obs;
 
@@ -12,7 +13,17 @@ class ReportsController extends GetxController {
     loadReports();
   }
 
-  void loadReports() {
-    reports.value = service.getReports();
+  Future<void> loadReports() async {
+    try {
+      isLoading.value = true;
+      await Future.delayed(const Duration(seconds: 1));
+      reports.value = service.getReports();
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void addReport(WildlifeReportModel report) {
+    reports.insert(0, report); // add to top of list
   }
 }
